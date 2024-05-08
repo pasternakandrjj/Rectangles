@@ -13,9 +13,11 @@ namespace Rectangles
             // Add services to the container.
 
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
             builder.Services.AddDbContext<RectanglesDbContext>(options =>
                  options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+
+            builder.Services.AddMemoryCache();
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
