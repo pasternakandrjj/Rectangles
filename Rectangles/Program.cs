@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using Rectangles.Services;
 
 namespace Rectangles
 {
@@ -21,6 +23,8 @@ namespace Rectangles
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddScoped<IRectangleService, RectangleService>();
 
             var app = builder.Build();
 
