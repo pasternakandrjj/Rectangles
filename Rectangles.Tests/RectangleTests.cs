@@ -21,7 +21,7 @@ namespace Rectangles.Tests
             var client = _factory.CreateClient();
 
             // Act
-            var response = await client.GetAsync("/Rectangle/Get?a=2&b=3");
+            var response = await client.GetAsync("/Rectangle/Get");
 
             // Assert
             response.EnsureSuccessStatusCode();

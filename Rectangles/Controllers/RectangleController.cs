@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
 using Rectangles.Models;
 using Rectangles.Services;
 
@@ -11,25 +9,43 @@ namespace Rectangles.Controllers
     public class RectangleController : ControllerBase
     {
         private readonly ILogger<RectangleController> _logger;
-        private readonly IRectangleService _rectangleService;
+        private readonly IIntersectionService _intersectionService;
 
-        public RectangleController(ILogger<RectangleController> logger, IRectangleService rectangleService)
+        public RectangleController(ILogger<RectangleController> logger, IIntersectionService intersectionService)
         {
             _logger = logger;
-            _rectangleService = rectangleService;
+            _intersectionService = intersectionService;
         }
 
         //sides of rectangle should be in range 10
         [HttpGet("Get")]
-        public async Task<IEnumerable<Rectangle>> Get(double a, double b)
+        public async Task<IEnumerable<Rectangle>> Get()
         {
-            return await _rectangleService.GetRectangles(a, b);
+            return await _intersectionService.GetRectangles();
         }
 
         [HttpGet("GenerateRectangles")]
         public async Task<IEnumerable<Rectangle>> GenerateRectanglesAsync()
         {
-            return await _rectangleService.GenerateRectanglesAsync();
+            return await _intersectionService.GenerateRectanglesAsync();
+        }
+
+        [HttpGet("Intersect")]
+        public async Task<List<Rectangle>> GetIntersectingRectanglesAsync(double x1, double y1, double x2, double y2)
+        {
+            var rectangles = await _intersectionService.GetRectangles();
+            var segment = new Segment
+            {
+                X1 = x1,
+                Y1 = y1,
+                X2 = x2,
+                Y2 = y2
+            };
+            var intersectingRectangles = rectangles
+                .Where(rect => _intersectionService.DoesIntersect(segment, rect))
+                .ToList();
+
+            return intersectingRectangles;
         }
     }
 }

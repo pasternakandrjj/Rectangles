@@ -24,7 +24,7 @@ namespace Rectangles
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddScoped<IRectangleService, RectangleService>();
+            builder.Services.AddScoped<IIntersectionService, IntersectionService>();
 
             var app = builder.Build();
 
